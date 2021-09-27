@@ -1,16 +1,15 @@
+CREATE SCHEMA user_database;
+
 USE user_database;
 
-# User
-DROP TABLE IF EXISTS user;
+# Country
+DROP TABLE IF EXISTS country;
 
-CREATE TABLE user
+CREATE TABLE country
 (
-    id         SERIAL,
-    login varchar(100)    not null,
-    password  varchar(100)    not null,
-    PRIMARY KEY (id),
-    user_account_id BIGINT UNSIGNED NOT NULL,
-    FOREIGN KEY (user_account_id) REFERENCES user_account (id) ON DELETE CASCADE
+    id           SERIAL,
+    country_name varchar(100) not null,
+    PRIMARY KEY (id)
 );
 # User account
 DROP TABLE IF EXISTS user_account;
@@ -26,6 +25,18 @@ CREATE TABLE user_account
     PRIMARY KEY (id),
     country_id BIGINT UNSIGNED NOT NULL,
     FOREIGN KEY (country_id) REFERENCES country (id) ON DELETE CASCADE
+);
+# User
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE user
+(
+    id         SERIAL,
+    login varchar(100)    not null,
+    password  varchar(100)    not null,
+    PRIMARY KEY (id),
+    user_account_id BIGINT UNSIGNED NOT NULL UNIQUE,
+    FOREIGN KEY (user_account_id) REFERENCES user_account (id) ON DELETE CASCADE
 );
 # Role
 DROP TABLE IF EXISTS role;
@@ -44,15 +55,6 @@ CREATE TABLE user_roles
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (user_id, role_id)
-);
-# Country
-DROP TABLE IF EXISTS country;
-
-CREATE TABLE country
-(
-    id           SERIAL,
-    country_name varchar(100) not null,
-    PRIMARY KEY (id)
 );
 # City
 DROP TABLE IF EXISTS city;

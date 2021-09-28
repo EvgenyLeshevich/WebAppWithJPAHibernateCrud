@@ -1,4 +1,4 @@
-CREATE SCHEMA user_database;
+CREATE SCHEMA IF NOT EXISTS user_database;
 
 USE user_database;
 
